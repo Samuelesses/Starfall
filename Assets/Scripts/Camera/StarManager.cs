@@ -1,12 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
-
-[System.Serializable]
-public class StarBeat
-{
-    public float time; // seconds into the song
-}
 
 public class StarManager : MonoBehaviour
 {
@@ -19,89 +12,66 @@ public class StarManager : MonoBehaviour
 
     [Header("Music Settings")]
     public AudioSource musicSource;
-    public List<StarBeat> beatMap = new List<StarBeat>();
+    public float bpm = 120f;
+    public float startOffset = 0f;
 
     private Transform[] spawnPoints;
-    private int nextBeatIndex = 0;
     private Vector3 originalScale;
-    private Renderer objectRenderer;
-    private ParticleSystem spawnedParticle;
+    private float beatInterval;
+    private float nextBeatTime;
 
     void Start()
     {
-        if (starObject == null || musicSource == null || beatMap.Count == 0) return;
-
-        // Find spawn points
+        if (starObject == null || musicSource == null || bpm <= 0f) return;
         GameObject[] spawns = GameObject.FindGameObjectsWithTag(spawnTag);
         spawnPoints = new Transform[spawns.Length];
         for (int i = 0; i < spawns.Length; i++)
             spawnPoints[i] = spawns[i].transform;
 
         originalScale = starObject.transform.localScale;
-        objectRenderer = starObject.GetComponent<Renderer>();
-
-        // Instantiate particle prefab
-        if (particlePrefab != null)
-        {
-            GameObject go = Instantiate(particlePrefab, starObject.transform.position, Quaternion.identity);
-            spawnedParticle = go.GetComponent<ParticleSystem>();
-            go.SetActive(false);
-        }
-
-        // Start the song
+        beatInterval = 60f / bpm;
+        nextBeatTime = startOffset;
         musicSource.Play();
     }
 
     void Update()
     {
-        if (nextBeatIndex >= beatMap.Count) return;
-
-        // Check if current song time reached next beat
-        if (musicSource.time >= beatMap[nextBeatIndex].time)
+        if (musicSource == null) return;
+        while (musicSource.time >= nextBeatTime)
         {
             SpawnStar();
-            nextBeatIndex++;
+            nextBeatTime += beatInterval;
         }
     }
 
     void SpawnStar()
     {
         if (spawnPoints.Length == 0) return;
-
-        // Pick next spawn point
         int index = Random.Range(0, spawnPoints.Length);
-        starObject.transform.position = spawnPoints[index].position;
-
-        // Set material
-        if (spawnMaterial != null && objectRenderer != null)
-            objectRenderer.material = spawnMaterial;
-
-        // Reset scale
-        starObject.transform.localScale = originalScale;
-
-        // Play particle
-        if (spawnedParticle != null)
+        Vector3 pos = spawnPoints[index].position;
+        GameObject newStar = Instantiate(starObject, pos, starObject.transform.rotation);
+        Renderer r = newStar.GetComponent<Renderer>();
+        if (spawnMaterial != null && r != null) r.material = spawnMaterial;
+        newStar.transform.localScale = originalScale;
+        if (particlePrefab != null)
         {
-            spawnedParticle.gameObject.SetActive(false); // Reset
-            spawnedParticle.transform.position = starObject.transform.position;
-            spawnedParticle.gameObject.SetActive(true);
-            spawnedParticle.Play();
+            GameObject p = Instantiate(particlePrefab, newStar.transform.position, Quaternion.identity);
+            ParticleSystem ps = p.GetComponent<ParticleSystem>();
+            if (ps != null) ps.Play();
         }
-
-        // Shrink over time
-        StartCoroutine(ShrinkStar());
+        StartCoroutine(ShrinkStar(newStar.transform));
     }
 
-    IEnumerator ShrinkStar()
+    IEnumerator ShrinkStar(Transform target)
     {
         float elapsed = 0f;
         while (elapsed < shrinkDuration)
         {
             float t = elapsed / shrinkDuration;
-            starObject.transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, t);
+            target.localScale = Vector3.Lerp(originalScale, Vector3.zero, t);
             elapsed += Time.deltaTime;
             yield return null;
         }
-        starObject.transform.localScale = Vector3.zero;
+        target.localScale = Vector3.zero;
     }
 }

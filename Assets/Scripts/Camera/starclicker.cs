@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class starclicker : MonoBehaviour
 {
     public Material clickMaterial;
+    private bool isHovering = false;
     private Renderer objectRenderer;
 
     void Awake()
@@ -14,12 +16,23 @@ public class starclicker : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (!Physics.Raycast(ray, out hit)) return;
-        if (hit.collider.gameObject != gameObject) return;
-        if (!Input.GetMouseButtonDown(0)) return;
-        if (clickMaterial != null && objectRenderer != null)
+
+        isHovering = false;
+
+        if (Physics.Raycast(ray, out hit))
         {
-            objectRenderer.material = clickMaterial;
+            if (hit.collider.gameObject == gameObject)
+            {
+                isHovering = true;
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (clickMaterial != null && objectRenderer != null)
+                    {
+                        objectRenderer.material = clickMaterial;
+                    }
+                }
+            }
         }
     }
 }
