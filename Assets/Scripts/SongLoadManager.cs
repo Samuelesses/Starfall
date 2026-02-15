@@ -9,6 +9,7 @@ public class SongLoadManager : MonoBehaviour
     public AudioClip selectedClip;
     public string selectedSongName;
     public float selectedBPM;
+    public float selectedLengthSeconds;
     [SerializeField] private float beginDelaySeconds = 5f;
 
     void Awake()
@@ -33,11 +34,12 @@ public class SongLoadManager : MonoBehaviour
         }
     }
 
-    public void SelectSong(string songName, float bpm, AudioClip clip)
+    public void SelectSong(string songName, float bpm, AudioClip clip, float selectedseconds)
     {
         selectedSongName = songName;
         selectedBPM = bpm;
         selectedClip = clip;
+        selectedLengthSeconds = selectedseconds;
 
         SceneManager.LoadScene("Main");
     }
@@ -46,19 +48,17 @@ public class SongLoadManager : MonoBehaviour
     {
         if (scene.name != "Main") return;
 
-        // Try to use the StarManager's music source if available
         StarManager sm = FindObjectOfType<StarManager>();
         AudioSource target = null;
+        sm.songLength = selectedLengthSeconds;
         if (sm != null)
         {
             target = sm.musicSource != null ? sm.musicSource : sm.GetComponent<AudioSource>();
-            // Sync BPM on StarManager so spawning matches the selected song
             if (selectedBPM > 0f)
             {
                 sm.bpm = selectedBPM;
             }
         }
-        // Fallback to any AudioSource in the scene
         if (target == null) target = FindObjectOfType<AudioSource>();
 
         if (target != null)
@@ -67,13 +67,11 @@ public class SongLoadManager : MonoBehaviour
             {
                 target.clip = selectedClip;
             }
-            // Do not auto-play; StarManager.Begin() or other script should start it
             target.playOnAwake = false;
             target.Stop();
             target.time = 0f;
         }
 
-        // Begin StarManager after a delay, if present
         if (sm != null)
         {
             StartCoroutine(BeginAfterDelay(sm));

@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 public class MouseHoverLogger : MonoBehaviour
 {
     public AudioSource hoversound;
+    public GameObject SongSelectionUI;
+    public GameObject Credits;
     private bool isHovering;
 
     void Awake()
@@ -29,7 +31,12 @@ public class MouseHoverLogger : MonoBehaviour
         {
             if (gameObject.name == "Start")
             {
-                SceneManager.LoadScene("Main");
+                SongSelectionUI.SetActive(true);
+            }
+
+            if (gameObject.name == "Credits")
+            {
+                Credits.SetActive(true);
             }
         }
     }

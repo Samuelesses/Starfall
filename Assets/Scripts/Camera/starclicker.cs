@@ -8,7 +8,6 @@ public class starclicker : MonoBehaviour
     private Renderer objectRenderer;
     public ScoreManager scoremanager;
 
-    // Frame-wide click state (shared across all starclicker instances)
     private static int processedFrame = -1;
     private static bool clickedThisFrame = false;
     private static bool clickHadHit = false;
@@ -21,7 +20,6 @@ public class starclicker : MonoBehaviour
 
     void Update()
     {
-        // Reset shared state once per frame
         if (processedFrame != Time.frameCount)
         {
             processedFrame = Time.frameCount;
@@ -56,7 +54,6 @@ public class starclicker : MonoBehaviour
             }
         }
 
-        // Cache that a click happened even if not hovering
         if (Input.GetMouseButtonDown(0))
         {
             clickedThisFrame = true;
@@ -65,7 +62,6 @@ public class starclicker : MonoBehaviour
 
     void LateUpdate()
     {
-        // After all Updates run, log a miss only if no star registered a hit
         if (clickedThisFrame && !clickHadHit && !missLoggedThisFrame)
         {
             Debug.Log("Miss");

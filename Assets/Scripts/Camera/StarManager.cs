@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public class StarManager : MonoBehaviour
 {
@@ -9,8 +10,8 @@ public class StarManager : MonoBehaviour
     public string spawnTag = "spawn";
     public float shrinkDuration = 1f;
     public Material spawnMaterial;
-    public GameObject particlePrefab;
     public ScoreManager scoreManager;
+    public GameObject GameScore;
     
     [Header("line")]
     public Material lineMaterial;
@@ -21,6 +22,8 @@ public class StarManager : MonoBehaviour
     public AudioSource musicSource;
     public float bpm = 120f;
     public float startOffset = 0f;
+    public float songLength = 0f;
+    private bool SongFinished = false;
 
     private Transform[] spawnPoints;
     private Vector3 originalScale;
@@ -30,6 +33,12 @@ public class StarManager : MonoBehaviour
     private int? nextSpawnIndex = null;
     private GameObject lastGuidedStar;
     private bool isRunning = false;
+
+    [Header("complete settings")]
+    public GameObject CompleteUI;
+    public TextMeshProUGUI FinalScoreComplete;
+    public TextMeshProUGUI ScoreComplete;
+    public TextMeshProUGUI MissesComplete;
 
     void Start()
     {
@@ -47,10 +56,17 @@ public class StarManager : MonoBehaviour
     void Update()
     {
         if (musicSource == null || !isRunning) return;
+
         while (musicSource.time >= nextBeatTime)
         {
             SpawnStar();
             nextBeatTime += beatInterval;
+        }
+        if (!SongFinished && musicSource.time >= songLength)
+        {
+            SongFinished = true;
+            isRunning = false;
+            OnSongFinished();
         }
     }
 
@@ -63,6 +79,7 @@ public class StarManager : MonoBehaviour
         {
             musicSource.time = 0f;
             musicSource.Play();
+            GameScore.SetActive(true);
         }
     }
 
@@ -89,12 +106,6 @@ public class StarManager : MonoBehaviour
         Renderer r = newStar.GetComponent<Renderer>();
         if (spawnMaterial != null && r != null) r.material = spawnMaterial;
         newStar.transform.localScale = originalScale;
-        if (particlePrefab != null)
-        {
-            GameObject p = Instantiate(particlePrefab, newStar.transform.position, Quaternion.identity);
-            ParticleSystem ps = p.GetComponent<ParticleSystem>();
-            if (ps != null) ps.Play();
-        }
         occupiedSpawnIndices.Add(index);
 
         if (lastGuidedStar != null)
@@ -161,5 +172,20 @@ public class StarManager : MonoBehaviour
             Destroy(target.gameObject);
         }
     }
+    void OnSongFinished()
+    {
+        Debug.Log("Song finished");
+
+        musicSource.Stop();
+        CompleteUI.SetActive(true);
+        float score = scoreManager.Score;
+        float misses = scoreManager.Misses;
+        FinalScoreComplete.SetText($"Final Score: {score - (misses * 25)}");
+        ScoreComplete.SetText($"Score: +{score}");
+        MissesComplete.SetText($"Misses: -{misses * 25}");
+        GameScore.SetActive(false);
+    }
+
 
 }
+
