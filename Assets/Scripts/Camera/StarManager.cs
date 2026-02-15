@@ -29,6 +29,7 @@ public class StarManager : MonoBehaviour
     private HashSet<int> occupiedSpawnIndices = new HashSet<int>();
     private int? nextSpawnIndex = null;
     private GameObject lastGuidedStar;
+    private bool isRunning = false;
 
     void Start()
     {
@@ -41,16 +42,27 @@ public class StarManager : MonoBehaviour
         originalScale = starObject.transform.localScale;
         beatInterval = 60f / bpm;
         nextBeatTime = startOffset;
-        musicSource.Play();
     }
 
     void Update()
     {
-        if (musicSource == null) return;
+        if (musicSource == null || !isRunning) return;
         while (musicSource.time >= nextBeatTime)
         {
             SpawnStar();
             nextBeatTime += beatInterval;
+        }
+    }
+
+    public void Begin()
+    {
+        if (musicSource == null) return;
+        nextBeatTime = startOffset;
+        isRunning = true;
+        if (!musicSource.isPlaying)
+        {
+            musicSource.time = 0f;
+            musicSource.Play();
         }
     }
 
@@ -142,6 +154,11 @@ public class StarManager : MonoBehaviour
         if (scoreManager != null && rend != null && rend.sharedMaterial == spawnMaterial)
         {
             scoreManager.CountMiss();
+        }
+
+        if (target != null)
+        {
+            Destroy(target.gameObject);
         }
     }
 

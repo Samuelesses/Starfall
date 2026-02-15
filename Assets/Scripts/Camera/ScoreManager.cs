@@ -17,7 +17,6 @@ public class ScoreManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(score - (misses * 200));
     }
 
     public void AddScore(float amount)
