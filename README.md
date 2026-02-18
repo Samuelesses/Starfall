@@ -1,3 +1,5 @@
+▶ Play the Demo: https://samueless.itch.io/starfall
+
 # Starfall
 
 Starfall is a rhythm based game with a 3D type camera. You can move your view to an extent, you use your mouse to click stars that decrease in size overtime. Click the star before it shrinks to bank score, the earlier you hit it, the more score you earn.
