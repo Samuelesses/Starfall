@@ -23,7 +23,8 @@ https://www.youtube.com/watch?v=Q2OP5GPR7Ao&t=3s
 
 <img width="1438" height="799" alt="image" src="https://github.com/user-attachments/assets/1be94b06-1d90-4710-83a8-f543ecf87195" />
 
-<img width="1438" height="799" alt="image" src="https://github.com/user-attachments/assets/b25b3e3c-e261-455e-9969-f6ddf343d3ac" />
+<img width="1436" height="802" alt="Screenshot 2026-02-19 at 10 47 41 am" src="https://github.com/user-attachments/assets/a6561b8d-6d16-4da2-aeb9-211d3f85e218" />
+
 
 ## DEMO NOTE:
 
