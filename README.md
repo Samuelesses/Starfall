@@ -17,6 +17,14 @@ OSU! was an inspiration for this project. I enjoyed playing OSU! but I wanted a 
 ## Playthrough:
 https://www.youtube.com/watch?v=Q2OP5GPR7Ao&t=3s
 
+## Screenshots
+
+<img width="1439" height="784" alt="Screenshot 2026-02-19 at 10 45 54 am" src="https://github.com/user-attachments/assets/97d76af5-d5ec-4602-88c3-729241619b5f" />
+
+<img width="1438" height="799" alt="image" src="https://github.com/user-attachments/assets/1be94b06-1d90-4710-83a8-f543ecf87195" />
+
+<img width="1438" height="799" alt="image" src="https://github.com/user-attachments/assets/b25b3e3c-e261-455e-9969-f6ddf343d3ac" />
+
 ## DEMO NOTE:
 
 This is unfinished and contains copyrighted music.
@@ -48,3 +56,4 @@ Queen - Don't Stop Me Now
 Macklemore, Ryan Lewid, Ray Dalton - Can't Hold Us
 
 The Killers - Mr. Brightside
+
