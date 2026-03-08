@@ -22,12 +22,12 @@ public class ScoreManager : MonoBehaviour
     public void AddScore(float amount)
     {
         score += amount;
-        scoreCount.SetText($"Score: {score:F0}");
+        scoreCount.SetText($"{score:F0}");
     }
 
     public void CountMiss()
     {
         misses += 1;
-        missCount.SetText($"Misses: {misses:F0}");
+        missCount.SetText($"{misses:F0}");
     }
 }

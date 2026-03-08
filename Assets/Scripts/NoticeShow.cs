@@ -5,7 +5,7 @@ public class NoticeShow : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Invoke(nameof(HideNotice), 5f);
+        Invoke(nameof(HideNotice), 2f);
         
     }
 
