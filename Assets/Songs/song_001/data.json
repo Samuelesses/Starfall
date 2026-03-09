@@ -1,0 +1,9 @@
+{
+  "id": "song_001",
+  "name": "Midnight Pulse",
+  "artist": "Nova Beat",
+  "bpm": 128,
+  "audio": "audio.ogg",
+  "cover": "cover.png",
+  "offset": 0.0
+}
