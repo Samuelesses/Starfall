@@ -1,8 +1,14 @@
 {
   "id": "song_001",
+<<<<<<< Updated upstream
   "name": "Midnight Pulse",
   "artist": "Nova Beat",
   "bpm": 128,
+=======
+  "name": "Stay With Me",
+  "artist": "Sam Smith",
+  "bpm": 84,
+>>>>>>> Stashed changes
   "audio": "audio.ogg",
   "cover": "cover.png",
   "offset": 0.0

@@ -1,0 +1,9 @@
+{
+  "id": "song_005",
+  "name": "Uptown Funk",
+  "artist": "Bruno Mars",
+  "bpm": 115,
+  "audio": "audio.ogg",
+  "cover": "cover.png",
+  "offset": 0.0
+}
